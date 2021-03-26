@@ -6,9 +6,67 @@ package logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class LazyLoggerTest {
-    @Test public void testSomeLibraryMethod() {
-        LazyLogger classUnderTest = new LazyLogger();
-        assertTrue("someLibraryMethod should return 'true'", classUnderTest.someLibraryMethod());
+  class MockLogger {
+    String logLine; 
+
+    void trace(String message, Object param) {
+      //do nothing
     }
+
+    void error(String message, Object param){
+      logLine = message + param.toString();
+    }
+  }
+
+  MockLogger log = new MockLogger();
+
+  @Test
+  public void givenPredicatedIsExcecutedWhenLogged() {
+    var executed = new AtomicBoolean(false);
+    log.error(
+        "lazy test {}",
+        LazyLogger.of(
+            () -> {
+              executed.set(true);
+              return "lazy";
+            }));
+    assertTrue(executed.get());
+  }
+
+  @Test
+  public void givenPredicatedCanTrowExceptions() {
+    final String actual =
+        LazyLogger.of(
+                () -> {
+                  throw new Exception("test exception");
+                })
+            .toString();
+    assertEquals("test exception", actual);
+  }
+
+  @Test
+  public void givenPredicatedIsntExcecutedWhenNotLogged() {
+    var executed = new AtomicBoolean(false);
+    log.trace(
+        "lazy test {}",
+        LazyLogger.of(
+            () -> {
+              executed.set(true);
+              return "lazy";
+            }));
+    assertFalse(executed.get());
+  }
+
+  @Test
+  public void anyObjectToLazyExcecutionJsonConvertion() {
+    LazyLogger converted =
+        LazyLogger.asJson(
+            new Object() {
+              public String mock = "mock";
+            });
+    assertEquals("{\"mock\":\"mock\"}", converted.toString());
+  }
 }

@@ -3,8 +3,34 @@
  */
 package logger;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class LazyLogger {
-    public boolean someLibraryMethod() {
-        return true;
+  public static interface Sentence {
+    public Object execute() throws Exception;
+  }
+
+  final Sentence supplier;
+  final static ObjectMapper objectMapper = new ObjectMapper();
+
+	public LazyLogger(Sentence supplier) {
+    this.supplier = supplier;
+  }
+
+  public static LazyLogger of(Sentence supplier) {
+    return new LazyLogger(supplier);
+  }
+
+  @Override
+  public String toString() {
+    try {
+      return String.valueOf(supplier.execute());
+    } catch (Exception e) {
+      return e.getMessage();
     }
+  }
+
+  public static LazyLogger asJson(Object toBeConverted) {
+    return LazyLogger.of(() -> objectMapper.writeValueAsString(toBeConverted));
+  }
 }
