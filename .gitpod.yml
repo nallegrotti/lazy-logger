@@ -1,3 +1,7 @@
 tasks:
   - init: ./gradlew test
     command: 'echo "TODO: Replace with command to start project"'
+
+vscode:
+  extensions:
+    - richardwillis.vscode-gradle@3.6.1:y4G3yqImY+P4qkY5ViQzZA==
