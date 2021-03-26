@@ -6,9 +6,9 @@ package logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class LibraryTest {
+public class LazyLoggerTest {
     @Test public void testSomeLibraryMethod() {
-        Library classUnderTest = new Library();
+        LazyLogger classUnderTest = new LazyLogger();
         assertTrue("someLibraryMethod should return 'true'", classUnderTest.someLibraryMethod());
     }
 }

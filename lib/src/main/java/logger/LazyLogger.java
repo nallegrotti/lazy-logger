@@ -3,7 +3,7 @@
  */
 package logger;
 
-public class Library {
+public class LazyLogger {
     public boolean someLibraryMethod() {
         return true;
     }
