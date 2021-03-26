@@ -1,1 +1,1 @@
-# lazzy-logger
+# lazy-logger
