@@ -61,12 +61,19 @@ public class LazyLoggerTest {
   }
 
   @Test
-  public void anyObjectToLazyExcecutionJsonConvertion() {
+  public void anyObjectToLazyExecutionJsonConvertion() {
     LazyLogger converted =
         LazyLogger.asJson(
             new Object() {
               public String mock = "mock";
             });
     assertEquals("{\"mock\":\"mock\"}", converted.toString());
+  }
+
+  @Test
+  public void nullObjectToLazyExecutionJsonConvertion() {
+    LazyLogger converted =
+        LazyLogger.asJson(null);
+    assertEquals("null", converted.toString());
   }
 }
