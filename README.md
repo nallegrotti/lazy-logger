@@ -1,5 +1,21 @@
 # lazy-logger
 
+Stop doing this:
+```java
+if (log.isDebugEnabled()){
+  log.debug("some heavy calculation: {}", heavyCalculate(params));
+  log.debug("JSON formated: {}", objectMapper.writeValueAsString(someObject))
+}
+```
+...and make this:
+```java
+  log.debug("some heavy calculation: {}", LazyLogger.of(() -> heavyCalculate(params)));
+  log.debug("JSON formated: {}", LazyLogger.asJson(someObject))
+```
+whithout extra CPU cost.
+
+Lazy Logger isn't evaluated if logger isn't enabled, so you haven't care about CPU cost and only care about your logging information.
+
 ## How to install
 
 ### Gradle
