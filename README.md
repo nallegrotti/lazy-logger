@@ -4,13 +4,13 @@ Stop doing this:
 ```java
 if (log.isDebugEnabled()){
   log.debug("some heavy calculation: {}", heavyCalculate(params));
-  log.debug("JSON formated: {}", objectMapper.writeValueAsString(someObject))
+  log.debug("JSON formated: {}", objectMapper.writeValueAsString(someObject));
 }
 ```
 ...and make this:
 ```java
   log.debug("some heavy calculation: {}", LazyLogger.of(() -> heavyCalculate(params)));
-  log.debug("JSON formated: {}", LazyLogger.asJson(someObject))
+  log.debug("JSON formated: {}", LazyLogger.asJson(someObject));
 ```
 whithout extra CPU cost.
 
